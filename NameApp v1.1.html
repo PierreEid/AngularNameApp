@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <style>
+    h1 {
+      text-align: center;
+      font-family: calibri;
+    }
+    body {
+      background-color: #d9d9d9;
+    }
+    .textBox {
+      padding: 10px;
+      font-size: 20px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+  <title>Angular App</title>
+</head>
+<body ng-app="myApp">
+
+  <div class="row">
+    <div style="background-color: #ff9999;" class="col-sm-12">
+      <h1>An Angular Application!</h1>
+      <p style="text-align: center;">This application keeps track of a list of names. It can dynamically add and remove names from the list using AngularJS.</p>
+      <p style="text-align: center;">Technologies and Languages Used: HTML, CSS, JavaScript, AngularJS, and Bootstrap.</p>
+    </div>
+  </div>
+
+  <div ng-controller="NameController as nameCtrl">
+    <div class="row" style="text-align: center; padding: 10px">
+      <div class="col-sm-6">
+        <form ng-submit="nameCtrl.pushToNames()">
+          <input class="textBox" type="text" placeholder="Enter name here..." ng-model="nameCtrl.enteredName">
+          <input type="submit" value="Enter Name">
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <form ng-submit="nameCtrl.removeFromNames()">
+          <input class="textBox" type="text" placeholder="Enter name here..." ng-model="nameCtrl.toBeRemoved">
+          <input type="submit" value="Remove Name">
+        </form>
+      </div>
+    </div>
+    <div style="text-align: center;">
+      <p class="error" ng-bind="nameCtrl.errorMsg" ng-show="nameCtrl.errorBool"></p>
+      <p ng-hide="nameCtrl.names.length === 0">List of Names:</p>
+      <ul ng-repeat="name in nameCtrl.names" style="list-style-type: none;">
+        <li>{{name}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module('myApp', []);
+
+    app.controller('NameController', function() {
+      this.names = [];
+      this.enteredName = "";
+      this.toBeRemoved = "";
+      this.errorMsg = "";
+      this.errorBool = false;
+      this.index = 0;
+
+      this.pushToNames = function() {
+        this.enteredName = this.enteredName.toUpperCase();
+        if(this.names.indexOf(this.enteredName) === -1) {
+          this.names.push(this.enteredName);
+          this.enteredName = "";
+          this.errorBool = false;
+        }
+        else {
+          this.errorBool = true;
+          this.errorMsg = "The specified name is already in the list and cannot be added.";
+          this.enteredName = "";
+        }
+      };
+
+      this.removeFromNames = function() {
+        this.toBeRemoved = this.toBeRemoved.toUpperCase();
+        this.index = this.names.indexOf(this.toBeRemoved);
+        if(this.index !== -1) {
+          this.names.splice(this.index, 1);
+          this.toBeRemoved = "";
+          this.errorBool = false;
+        }
+        else {
+          this.errorBool = true;
+          this.errorMsg = "The specified name is not in the list and cannot be removed."
+        }
+      };
+    });
+
+    // app.controller('TechnologyController', function() {
+    //   this.techs = ["HTML, CSS, JavaScript, AngularJS, Bootstrap"];
+    // });
+  </script>
+</body>
+</html>
