@@ -51,7 +51,7 @@
         </form>
       </div>
     </div>
-    <div style="text-align: center;">
+    <div style="text-align: center;" ng-cloak>
       <p class="error" ng-bind="nameCtrl.errorMsg" ng-show="nameCtrl.errorBool"></p>
       <p ng-hide="nameCtrl.names.length === 0">List of Names:</p>
       <ul ng-repeat="name in nameCtrl.names" style="list-style-type: none;">
